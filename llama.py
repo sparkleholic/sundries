@@ -18,8 +18,9 @@ messages = [
 ]
 
 # ** Prompt Evaluation**
+print("Pipe device type:", pipe.device.type)
 start_prompt = time.time()
-inputs = pipe.tokenizer.apply_chat_template(messages, tokenize=True, return_tensors="pt").to("cuda")
+inputs = pipe.tokenizer.apply_chat_template(messages, tokenize=True, return_tensors="pt").to(pipe.device)
 prompt_tokens = inputs.shape[1]
 end_prompt = time.time()
 
@@ -51,7 +52,7 @@ except Exception as e:
 generate_eval_time = end_generate - start_generate
 generate_tokens_per_sec = generated_tokens / generate_eval_time if generate_eval_time > 0 else float("inf")
 
-# **📌 Print Results**
+# ** Print Results**
 print(f"\n[Prompt Evaluation] {prompt_tokens} tokens processed in {prompt_eval_time:.3f} sec ({prompt_tokens_per_sec:.2f} tokens/sec)")
 print(f"[Generate Evaluation] {generated_tokens} tokens generated in {generate_eval_time:.3f} sec ({generate_tokens_per_sec:.2f} tokens/sec)")
 print("\n[Model Output]:")
